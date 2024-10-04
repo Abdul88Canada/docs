@@ -1,9 +1,10 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "c-mass",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/nz-logo.png",
+    "light": "/logo/nz-logo.png",
+    "href": "https://c-mass.co"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -29,23 +30,6 @@
     {
       "name": "API Reference",
       "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
     }
   ],
   "navigation": [
@@ -75,11 +59,25 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Orders",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/endpoint/orders/getListOfOrders",
+        "api-reference/endpoint/orders/getOrderById",
+        "api-reference/endpoint/orders/postOrder",
+        "api-reference/endpoint/orders/postCancelOrder"
+      ]
+    },
+    {
+      "group": "Portfolios",
+      "pages": [
+        "api-reference/endpoint/portfolios/getListOfPortfolios",
+        "api-reference/endpoint/portfolios/getPortfolioById"
+      ]
+    },
+    {
+      "group": "Projects",
+      "pages": [
+        "api-reference/endpoint/projects/getProjectById"
       ]
     }
   ],

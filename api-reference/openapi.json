@@ -1,16 +1,13 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "C-Mass API",
+    "description": "API for managing carbon credits, projects, portfolios, and orders",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "http://localhost:5001"
     }
   ],
   "security": [
@@ -19,160 +16,408 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/api/v1/orders": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "Retrieve all orders for a company",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+              "type": "integer"
+            },
+            "required": false,
+            "description": "The ID of the company"
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "List of all orders",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "$ref": "#/components/schemas/Order"
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "companyId is required"
+          },
+          "404": {
+            "description": "No orders found for the company"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       },
       "post": {
-        "description": "Creates a new plant in the store",
+        "summary": "Create a new carbon credits order",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
-          "description": "Plant to add to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "type": "object",
+                "properties": {
+                  "portfolioId": {
+                    "type": "string",
+                    "description": "The portfolio ID"
+                  },
+                  "tonnes": {
+                    "type": "number",
+                    "description": "Number of tonnes of carbon credits to purchase"
+                  },
+                  "unitPrice": {
+                    "type": "number",
+                    "description": "Price per tonne"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the order"
+                  },
+                  "companyId": {
+                    "type": "string",
+                    "description": "The company ID"
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
+          "201": {
+            "description": "Order placed successfully"
           },
           "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Missing required fields"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/api/v1/orders/{id}": {
+      "get": {
+        "summary": "Retrieve a specific order by ID",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+              "type": "string"
+            },
+            "required": true,
+            "description": "The order ID"
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Details of the order",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{id}/cancel": {
+      "post": {
+        "summary": "Cancel an order by ID",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The order ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order cancelled successfully"
+          },
+          "400": {
+            "description": "Order is already cancelled"
+          },
+          "404": {
+            "description": "Order not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{id}": {
+      "get": {
+        "summary": "Retrieve a specific project by ID",
+        "tags": ["Projects"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The project ID"
+          },
+          {
+            "name": "isSandbox",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Whether the request is for the sandbox environment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Details of the project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/portfolios": {
+      "get": {
+        "summary": "Retrieve all portfolios",
+        "tags": ["Portfolios"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Portfolio"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No portfolios found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/portfolios/{id}": {
+  "get": {
+    "summary": "Retrieve a specific portfolio by ID",
+    "tags": ["Portfolios"],
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "The ID of the portfolio"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Portfolio details along with associated projects",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "portfolio": {
+                  "$ref": "#/components/schemas/Portfolio"
+                },
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "The project ID"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The project name"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "The project description"
+                      },
+                      "projectCategory": {
+                        "type": "string",
+                        "description": "The project category"
+                      }
+                    }
+                  }
                 }
               }
             }
           }
         }
+      },
+      "404": {
+        "description": "Portfolio not found"
+      },
+      "500": {
+        "description": "Server error"
       }
     }
+  }
+}
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "Order": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
+          "orderNumber": {
+            "description": "The unique order number",
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
+          "creditsPurchased": {
+            "description": "Number of carbon credits purchased",
+            "type": "number"
+          },
+          "status": {
+            "description": "Current status of the order",
             "type": "string"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "Project": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the project",
+            "type": "string"
           },
-          {
-            "required": [
-              "id"
-            ],
+          "description": {
+            "description": "The description of the project",
+            "type": "string"
+          },
+          "portfolio": {
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "projectCategory": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
               }
             }
           }
-        ]
+        }
+      },
+      "Portfolio": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the portfolio",
+            "type": "string"
+          },
+          "description": {
+            "description": "A brief description of the portfolio",
+            "type": "string"
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The project IDs associated with this portfolio"
+            }
+          }
+        }
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+        "required": ["error", "message"],
         "type": "object",
         "properties": {
           "error": {

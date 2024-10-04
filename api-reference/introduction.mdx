@@ -1,31 +1,66 @@
 ---
 title: 'Overview'
-description: 'Introduction to C-Mass API and features'
+description: 'Introduction to c-mass API and features'
 ---
 
 <Note>
   This API documentation showcases how to purchase carbon credits and offset emissions with ease.
 </Note>
 
-## Welcome to C-Mass API
+## Welcome to c-mass API
 
 Our API allows you to easily purchase carbon credits for various activities like transportation, logistics, and more.
 
-<Card
-  title="C-Mass API Endpoints"
-  icon="leaf"
-  href="https://api.c-mass.com/v1"
->
-  View the OpenAPI specification file
-</Card>
 
 ## Authentication
 
-All API endpoints require Bearer tokens for authentication.
+Clients must authenticate by including their CNaught API Key in the Authorization header. If the API key is invalid, a 401 error code will be returned.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+Use your sandbox API key to make sandbox requests and production API key for production requests.
+
+## Sandbox Mode
+        
+        c-mass includes a sandbox mode that allows you to try all the API functions without incurring any costs or actually purchasing credits. 
+        
+        - You can toggle sandbox mode via the switch in the web dashboard.
+        - Use the same API endpoints for sandbox and production modes, but pass a sandbox API key.
+        - Both sandbox and production API keys can be created from the Developers page.
+
+## Authentication
+        
+        Clients authenticate by including their c-mass API Key in the ***Authorization*** header. If the API key is invalid, a **401 Unauthorized** error will be returned.
+        
+        - Use the sandbox API key for sandbox requests.
+        - Use the production API key for production requests.
+
+ ## Rate Limiting
+
+        The c-mass API employs rate limiting to ensure stability.
+
+        - **100 write and 100 read operations per second** are allowed.
+        - Users who exceed these limits will receive a **429 Too Many Requests** response.
+        - Implement a retry mechanism with **exponential backoff** for handling rate limits.
+
+ ## Idempotency
+
+        To prevent duplicate actions during failures and retries, the API supports idempotency. This ensures that retrying the same request (e.g., order placement) will perform the action only once.
+
+        - Include an $$\Idempotency-Key:<key>\$$ header in your request to enable idempotency.
+        - If the request has already been processed, the response will include an $$\X-Idempotent-Replay: true\$$ header.
+
+ ## Error Codes
+
+        The c-mass API uses standard HTTP status codes to indicate success or failure:
+
+        | Status Code | Error       | Description                              |
+        | ----------- | -------------- | ------------------------------------- |
+        | 400         | Bad Request     | Invalid request parameters.          |
+        | 401         | Unauthorized    | Missing or invalid API key.          |
+        | 403         | Forbidden       | Operation not allowed.               |
+        | 409         | Conflict        | Idempotency conflict.                |
+        | 422         | Unprocessable Entity     | Idempotency key used with different payload.          |
+        | 429         | Too Many Requests        | Rate limit exceeded.               |
+        | 503         | Service Unavailable        | Temporary server issue, retry the request.               |
+        
+
+        For more details, see individual API endpoint documentation.
