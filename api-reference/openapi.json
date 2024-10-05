@@ -33,7 +33,7 @@
               "type": "integer"
             },
             "required": false,
-            "description": "The ID of the company"
+            "description": "Limits the number of orders returned, default is 20, max is 100"
           }
         ],
         "responses": {
@@ -75,26 +75,19 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["amount_kg"],
                 "properties": {
                   "portfolioId": {
                     "type": "string",
                     "description": "The portfolio ID"
                   },
-                  "tonnes": {
+                  "amount_kg": {
                     "type": "number",
-                    "description": "Number of tonnes of carbon credits to purchase"
-                  },
-                  "unitPrice": {
-                    "type": "number",
-                    "description": "Price per tonne"
+                    "description": "The amount of credits to purchase, in kg of CO2. Must be a positive integer."
                   },
                   "description": {
                     "type": "string",
                     "description": "Description of the order"
-                  },
-                  "companyId": {
-                    "type": "string",
-                    "description": "The company ID"
                   }
                 }
               }
@@ -103,7 +96,17 @@
         },
         "responses": {
           "201": {
-            "description": "Order placed successfully"
+            "description": "Order placed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Missing required fields"
@@ -176,7 +179,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Order cancelled successfully"
+            "description": "Order cancelled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
           },
           "400": {
             "description": "Order is already cancelled"
@@ -208,14 +218,6 @@
             },
             "required": true,
             "description": "The project ID"
-          },
-          {
-            "name": "isSandbox",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Whether the request is for the sandbox environment"
           }
         ],
         "responses": {
@@ -343,22 +345,90 @@
   "components": {
     "schemas": {
       "Order": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "description": "The unique identifier for the order",
+        "type": "string"
+      },
+      "order_number": {
+        "description": "The unique order number",
+        "type": "string"
+      },
+      "amount_kg": {
+        "description": "Number of carbon credits purchased, in kilograms",
+        "type": "number"
+      },
+      "price_usd_cents": {
+        "description": "Total price of the credits purchased in USD cents",
+        "type": "integer"
+      },
+      "metadata": {
+        "description": "Optional metadata associated with the order",
         "type": "object",
-        "properties": {
-          "orderNumber": {
-            "description": "The unique order number",
-            "type": "string"
-          },
-          "creditsPurchased": {
-            "description": "Number of carbon credits purchased",
-            "type": "number"
-          },
-          "status": {
-            "description": "Current status of the order",
-            "type": "string"
+        "nullable": true
+      },
+      "description": {
+        "description": "Description of the order",
+        "type": "string",
+        "nullable": true
+      },
+      "callback_url": {
+        "description": "Callback URL for order updates (if any)",
+        "type": "string",
+        "nullable": true
+      },
+      "created_on": {
+        "description": "Timestamp when the order was created",
+        "type": "string",
+        "format": "date-time"
+      },
+      "state": {
+        "description": "Current status of the order, e.g., fulfilled, pending, or cancelled",
+        "type": "string"
+      },
+      "certificate_public_url": {
+        "description": "Public URL to view the carbon offset certificate",
+        "type": "string",
+        "nullable": true
+      },
+      "certificate_download_public_url": {
+        "description": "Public URL to download the carbon offset certificate in PDF format",
+        "type": "string",
+        "nullable": true
+      },
+      "project_allocations": {
+        "description": "List of project allocations for this order",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project_id": {
+              "description": "The ID of the project",
+              "type": "string"
+            },
+            "project_category_id": {
+              "description": "The category ID of the project",
+              "type": "string"
+            },
+            "credit_batch_id": {
+              "description": "The batch ID for the credits in this project",
+              "type": "string"
+            },
+            "delta": {
+              "description": "Amount of credits allocated to this project",
+              "type": "number"
+            },
+            "recorded_on": {
+              "description": "Date when this allocation was recorded",
+              "type": "string",
+              "format": "date-time"
+            }
           }
         }
-      },
+      }
+    }
+  },
       "Project": {
         "required": ["name"],
         "type": "object",
