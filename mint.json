@@ -68,6 +68,12 @@
       ]
     },
     {
+      "group": "Quotes",
+      "pages": [
+        "api-reference/endpoint/quotes/getQuoteByMass"
+      ]
+    },
+    {
       "group": "Portfolios",
       "pages": [
         "api-reference/endpoint/portfolios/getListOfPortfolios",

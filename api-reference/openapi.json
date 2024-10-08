@@ -2,12 +2,12 @@
   "openapi": "3.0.1",
   "info": {
     "title": "C-Mass API",
-    "description": "API for managing carbon credits, projects, portfolios, and orders",
+    "description": "API for managing carbon credits, projects, portfolios, emission quotes, and orders",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost:5001"
+      "url": "https://carbon-engine.onrender.com"
     }
   ],
   "security": [
@@ -19,7 +19,9 @@
     "/api/v1/orders": {
       "get": {
         "summary": "Retrieve all orders for a company",
-        "tags": ["Orders"],
+        "tags": [
+          "Orders"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -63,7 +65,9 @@
       },
       "post": {
         "summary": "Create a new carbon credits order",
-        "tags": ["Orders"],
+        "tags": [
+          "Orders"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -75,7 +79,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["amount_kg"],
+                "required": [
+                  "amount_kg"
+                ],
                 "properties": {
                   "portfolioId": {
                     "type": "string",
@@ -120,7 +126,9 @@
     "/api/v1/orders/{id}": {
       "get": {
         "summary": "Retrieve a specific order by ID",
-        "tags": ["Orders"],
+        "tags": [
+          "Orders"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -160,7 +168,9 @@
     "/api/v1/orders/{id}/cancel": {
       "post": {
         "summary": "Cancel an order by ID",
-        "tags": ["Orders"],
+        "tags": [
+          "Orders"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -203,7 +213,9 @@
     "/api/v1/projects/{id}": {
       "get": {
         "summary": "Retrieve a specific project by ID",
-        "tags": ["Projects"],
+        "tags": [
+          "Projects"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -243,7 +255,9 @@
     "/api/v1/portfolios": {
       "get": {
         "summary": "Retrieve all portfolios",
-        "tags": ["Portfolios"],
+        "tags": [
+          "Portfolios"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -273,164 +287,315 @@
       }
     },
     "/api/v1/portfolios/{id}": {
-  "get": {
-    "summary": "Retrieve a specific portfolio by ID",
-    "tags": ["Portfolios"],
-    "security": [
-      {
-        "bearerAuth": []
-      }
-    ],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "The ID of the portfolio"
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Portfolio details along with associated projects",
-        "content": {
-          "application/json": {
+      "get": {
+        "summary": "Retrieve a specific portfolio by ID",
+        "tags": [
+          "Portfolios"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
             "schema": {
-              "type": "object",
-              "properties": {
-                "portfolio": {
-                  "$ref": "#/components/schemas/Portfolio"
-                },
-                "projects": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "description": "The project ID"
-                      },
-                      "name": {
-                        "type": "string",
-                        "description": "The project name"
-                      },
-                      "description": {
-                        "type": "string",
-                        "description": "The project description"
-                      },
-                      "projectCategory": {
-                        "type": "string",
-                        "description": "The project category"
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the portfolio"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Portfolio details along with associated projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "portfolio": {
+                      "$ref": "#/components/schemas/Portfolio"
+                    },
+                    "projects": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "description": "The project ID"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The project name"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The project description"
+                          },
+                          "projectCategory": {
+                            "type": "string",
+                            "description": "The project category"
+                          }
+                        }
                       }
                     }
                   }
                 }
               }
             }
+          },
+          "404": {
+            "description": "Portfolio not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
-      },
-      "404": {
-        "description": "Portfolio not found"
-      },
-      "500": {
-        "description": "Server error"
+      }
+    },
+    "/api/v1/quotes": {
+      "post": {
+        "summary": "Get price quote for emission mass",
+        "tags": [
+          "Quotes"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "amount_kg"
+                ],
+                "properties": {
+                  "portfolioId": {
+                    "type": "string",
+                    "description": "The portfolio ID"
+                  },
+                  "amount_kg": {
+                    "type": "number",
+                    "description": "Amount of CO2 emissions, in kg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Quote fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quotes"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
       }
     }
-  }
-}
   },
   "components": {
     "schemas": {
       "Order": {
-    "type": "object",
-    "properties": {
-      "id": {
-        "description": "The unique identifier for the order",
-        "type": "string"
-      },
-      "order_number": {
-        "description": "The unique order number",
-        "type": "string"
-      },
-      "amount_kg": {
-        "description": "Number of carbon credits purchased, in kilograms",
-        "type": "number"
-      },
-      "price_usd_cents": {
-        "description": "Total price of the credits purchased in USD cents",
-        "type": "integer"
-      },
-      "metadata": {
-        "description": "Optional metadata associated with the order",
         "type": "object",
-        "nullable": true
-      },
-      "description": {
-        "description": "Description of the order",
-        "type": "string",
-        "nullable": true
-      },
-      "callback_url": {
-        "description": "Callback URL for order updates (if any)",
-        "type": "string",
-        "nullable": true
-      },
-      "created_on": {
-        "description": "Timestamp when the order was created",
-        "type": "string",
-        "format": "date-time"
-      },
-      "state": {
-        "description": "Current status of the order, e.g., fulfilled, pending, or cancelled",
-        "type": "string"
-      },
-      "certificate_public_url": {
-        "description": "Public URL to view the carbon offset certificate",
-        "type": "string",
-        "nullable": true
-      },
-      "certificate_download_public_url": {
-        "description": "Public URL to download the carbon offset certificate in PDF format",
-        "type": "string",
-        "nullable": true
-      },
-      "project_allocations": {
-        "description": "List of project allocations for this order",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "project_id": {
-              "description": "The ID of the project",
-              "type": "string"
-            },
-            "project_category_id": {
-              "description": "The category ID of the project",
-              "type": "string"
-            },
-            "credit_batch_id": {
-              "description": "The batch ID for the credits in this project",
-              "type": "string"
-            },
-            "delta": {
-              "description": "Amount of credits allocated to this project",
-              "type": "number"
-            },
-            "recorded_on": {
-              "description": "Date when this allocation was recorded",
-              "type": "string",
-              "format": "date-time"
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the order",
+            "type": "string"
+          },
+          "order_number": {
+            "description": "The unique order number",
+            "type": "string"
+          },
+          "amount_kg": {
+            "description": "Number of carbon credits purchased, in kilograms",
+            "type": "number"
+          },
+          "price_usd_cents": {
+            "description": "Total price of the credits purchased in USD cents",
+            "type": "integer"
+          },
+          "metadata": {
+            "description": "Optional metadata associated with the order",
+            "type": "object",
+            "nullable": true
+          },
+          "description": {
+            "description": "Description of the order",
+            "type": "string",
+            "nullable": true
+          },
+          "callback_url": {
+            "description": "Callback URL for order updates (if any)",
+            "type": "string",
+            "nullable": true
+          },
+          "created_on": {
+            "description": "Timestamp when the order was created",
+            "type": "string",
+            "format": "date-time"
+          },
+          "state": {
+            "description": "Current status of the order, e.g., fulfilled, pending, or cancelled",
+            "type": "string"
+          },
+          "certificate_public_url": {
+            "description": "Public URL to view the carbon offset certificate",
+            "type": "string",
+            "nullable": true
+          },
+          "certificate_download_public_url": {
+            "description": "Public URL to download the carbon offset certificate in PDF format",
+            "type": "string",
+            "nullable": true
+          },
+          "project_allocations": {
+            "description": "List of project allocations for this order",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "project_id": {
+                  "description": "The ID of the project",
+                  "type": "string"
+                },
+                "project_category_id": {
+                  "description": "The category ID of the project",
+                  "type": "string"
+                },
+                "credit_batch_id": {
+                  "description": "The batch ID for the credits in this project",
+                  "type": "string"
+                },
+                "delta": {
+                  "description": "Amount of credits allocated to this project",
+                  "type": "number"
+                },
+                "recorded_on": {
+                  "description": "Date when this allocation was recorded",
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
             }
           }
         }
-      }
-    }
-  },
+      },
+      "Quotes": {
+        "type": "object",
+        "properties": {
+          "amount_kg": {
+            "description": "Amount of carbon credits the quote is for, in kilograms",
+            "type": "number"
+          },
+          "price_sar_halalas": {
+            "description": "Price charged for the credits, in halalas (integer)",
+            "type": "number"
+          }
+        },
+        "Project": {
+          "required": [
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The name of the project",
+              "type": "string"
+            },
+            "description": {
+              "description": "The description of the project",
+              "type": "string"
+            },
+            "portfolio": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            },
+            "projectCategory": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Portfolio": {
+          "required": [
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The name of the portfolio",
+              "type": "string"
+            },
+            "description": {
+              "description": "A brief description of the portfolio",
+              "type": "string"
+            },
+            "projects": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "The project IDs associated with this portfolio"
+              }
+            }
+          }
+        },
+        "Error": {
+          "required": [
+            "error",
+            "message"
+          ],
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "Project": {
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -466,7 +631,9 @@
         }
       },
       "Portfolio": {
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -487,7 +654,10 @@
         }
       },
       "Error": {
-        "required": ["error", "message"],
+        "required": [
+          "error",
+          "message"
+        ],
         "type": "object",
         "properties": {
           "error": {
