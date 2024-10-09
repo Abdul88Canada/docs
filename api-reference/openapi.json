@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "C-Mass API",
-    "description": "API for managing carbon credits, projects, portfolios, emission quotes, and orders",
+    "description": "API for managing carbon credits, projects, portfolios, and orders",
     "version": "1.0.0"
   },
   "servers": [
@@ -19,9 +19,7 @@
     "/api/v1/orders": {
       "get": {
         "summary": "Retrieve all orders for a company",
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "security": [
           {
             "bearerAuth": []
@@ -65,9 +63,7 @@
       },
       "post": {
         "summary": "Create a new carbon credits order",
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "security": [
           {
             "bearerAuth": []
@@ -79,9 +75,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "amount_kg"
-                ],
+                "required": ["amount_kg"],
                 "properties": {
                   "portfolioId": {
                     "type": "string",
@@ -126,9 +120,7 @@
     "/api/v1/orders/{id}": {
       "get": {
         "summary": "Retrieve a specific order by ID",
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "security": [
           {
             "bearerAuth": []
@@ -168,9 +160,7 @@
     "/api/v1/orders/{id}/cancel": {
       "post": {
         "summary": "Cancel an order by ID",
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "security": [
           {
             "bearerAuth": []
@@ -213,9 +203,7 @@
     "/api/v1/projects/{id}": {
       "get": {
         "summary": "Retrieve a specific project by ID",
-        "tags": [
-          "Projects"
-        ],
+        "tags": ["Projects"],
         "security": [
           {
             "bearerAuth": []
@@ -255,9 +243,7 @@
     "/api/v1/portfolios": {
       "get": {
         "summary": "Retrieve all portfolios",
-        "tags": [
-          "Portfolios"
-        ],
+        "tags": ["Portfolios"],
         "security": [
           {
             "bearerAuth": []
@@ -289,9 +275,7 @@
     "/api/v1/portfolios/{id}": {
       "get": {
         "summary": "Retrieve a specific portfolio by ID",
-        "tags": [
-          "Portfolios"
-        ],
+        "tags": ["Portfolios"],
         "security": [
           {
             "bearerAuth": []
@@ -359,7 +343,7 @@
     },
     "/api/v1/quotes": {
       "post": {
-        "summary": "Get price quote for emission mass",
+        "summary": "Get carbon credit amount quote by emission mass",
         "tags": [
           "Quotes"
         ],
@@ -384,7 +368,7 @@
                   },
                   "amount_kg": {
                     "type": "number",
-                    "description": "Amount of CO2 emissions, in kg"
+                    "description": "The amount in kg of CO2 emissions. Must be a positive integer."
                   }
                 }
               }
@@ -392,21 +376,154 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Quote fetched successfully",
+          "200": {
+            "description": "Fetched quote successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Quotes"
-                  }
+                  "$ref": "#/components/schemas/Quote"
                 }
               }
             }
           },
           "400": {
-            "description": "Missing required fields"
+            "description": "Missing values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/quotes/air-freight": {
+      "post": {
+        "summary": "Get a carbon credit quote for air freight emissions",
+        "tags": [
+          "Quotes"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "freight_mass_kg",
+                  "distance_km"
+                ],
+                "properties": {
+                  "freight_mass_kg": {
+                    "type": "number",
+                    "description": "Mass of freight, in kg"
+                  },
+                  "distance_km": {
+                    "type": "number",
+                    "description": "Distance of air freight shipment, in km"
+                  },
+                  "portfolio_id": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional ID of the portfolio to use for the quote. The quote will be for an order fulfilled from this portfolio. If not specified, the account's default portfolio will be used."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fetched air freight quote successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AirFreightQuote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/quotes/flight": {
+      "post": {
+        "summary": "Get a carbon credit quote for flight emissions",
+        "tags": [
+          "Quotes"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "distance_km"
+                ],
+                "properties": {
+                  "distance_km": {
+                    "type": "number",
+                    "description": "Distance of flight, in km"
+                  },
+                  "portfolio_id": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional ID of the portfolio to use for the quote. The quote will be for an order fulfilled from this portfolio. If not specified, the account's default portfolio will be used."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fetched flight emissions quote successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightQuote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteError"
+                }
+              }
+            }
           },
           "500": {
             "description": "Server error"
@@ -502,100 +619,8 @@
           }
         }
       },
-      "Quotes": {
-        "type": "object",
-        "properties": {
-          "amount_kg": {
-            "description": "Amount of carbon credits the quote is for, in kilograms",
-            "type": "number"
-          },
-          "price_sar_halalas": {
-            "description": "Price charged for the credits, in halalas (integer)",
-            "type": "number"
-          }
-        },
-        "Project": {
-          "required": [
-            "name"
-          ],
-          "type": "object",
-          "properties": {
-            "name": {
-              "description": "The name of the project",
-              "type": "string"
-            },
-            "description": {
-              "description": "The description of the project",
-              "type": "string"
-            },
-            "portfolio": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              }
-            },
-            "projectCategory": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "Portfolio": {
-          "required": [
-            "name"
-          ],
-          "type": "object",
-          "properties": {
-            "name": {
-              "description": "The name of the portfolio",
-              "type": "string"
-            },
-            "description": {
-              "description": "A brief description of the portfolio",
-              "type": "string"
-            },
-            "projects": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "description": "The project IDs associated with this portfolio"
-              }
-            }
-          }
-        },
-        "Error": {
-          "required": [
-            "error",
-            "message"
-          ],
-          "type": "object",
-          "properties": {
-            "error": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "message": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "Project": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
@@ -631,9 +656,7 @@
         }
       },
       "Portfolio": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
@@ -653,11 +676,60 @@
           }
         }
       },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "amount_kg": {
+            "description": "Amount of carbon credits the quote is for, in kilograms",
+            "type": "number"
+          },
+          "price_sar_halalas": {
+            "description": "Price charged for the credits, in halalas (integer)",
+            "type": "number"
+          }
+        }
+      },
+      "AirFreightQuote": {
+        "type": "object",
+        "properties": {
+          "amount_kg": {
+            "description": "Amount of carbon credits the quote is for, in kilograms",
+            "type": "number"
+          },
+          "price_usd_cents": {
+            "description": "Price charged for the credits, in cents (integer)",
+            "type": "number"
+          }
+        }
+      },
+      "FlightQuote": {
+        "type": "object",
+        "properties": {
+          "amount_kg": {
+            "description": "Amount of carbon credits the quote is for, in kilograms",
+            "type": "number"
+          },
+          "price_sar_halalas": {
+            "description": "Price charged for the credits, in halalas (integer)",
+            "type": "number"
+          }
+        }
+      },
+      "QuoteError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message describing the issue"
+          }
+        }
+      },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+        "required": ["error", "message"],
         "type": "object",
         "properties": {
           "error": {

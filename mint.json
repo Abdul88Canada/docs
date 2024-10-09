@@ -70,7 +70,9 @@
     {
       "group": "Quotes",
       "pages": [
-        "api-reference/endpoint/quotes/getQuoteByMass"
+        "api-reference/endpoint/quotes/getQuoteByMass",
+        "api-reference/endpoint/quotes/getQuoteForAirFreightEmissions",
+        "api-reference/endpoint/quotes/getQuoteForFlightEmissions"
       ]
     },
     {
