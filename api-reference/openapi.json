@@ -668,91 +668,97 @@
   },
   "components": {
     "schemas": {
-      "Order": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "The unique identifier for the order",
-            "type": "string"
-          },
-          "order_number": {
-            "description": "The unique order number",
-            "type": "string"
-          },
-          "amount_kg": {
-            "description": "Number of carbon credits purchased, in kilograms",
-            "type": "number"
-          },
-          "price_sar_halalas": {
-            "description": "Total price of the credits purchased in SAR halalas",
-            "type": "integer"
-          },
-          "metadata": {
-            "description": "Optional metadata associated with the order",
-            "type": "object",
-            "nullable": true
-          },
-          "description": {
-            "description": "Description of the order",
-            "type": "string",
-            "nullable": true
-          },
-          "callback_url": {
-            "description": "Callback URL for order updates (if any)",
-            "type": "string",
-            "nullable": true
-          },
-          "created_on": {
-            "description": "Timestamp when the order was created",
-            "type": "string",
-            "format": "date-time"
-          },
-          "state": {
-            "description": "Current status of the order, e.g., fulfilled, pending, or cancelled",
-            "type": "string"
-          },
-          "certificate_public_url": {
-            "description": "Public URL to view the carbon offset certificate",
-            "type": "string",
-            "nullable": true
-          },
-          "certificate_download_public_url": {
-            "description": "Public URL to download the carbon offset certificate in PDF format",
-            "type": "string",
-            "nullable": true
-          },
-          "project_allocations": {
-            "description": "List of project allocations for this order",
-            "type": "array",
-            "items": {
+        "Order": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "description": "The unique order id",
+              "type": "string"
+            },
+            "orderNumber": {
+              "description": "The unique order number",
+              "type": "string"
+            },
+            "description": {
+              "description": "Description of the order",
+              "type": "string",
+              "nullable": true
+            },
+            "price_sar_halalas": {
+              "description": "Total price of the credits purchased in SAR halalas",
+              "type": "number"
+            },
+            "amount_kg": {
+              "description": "Number of carbon credits purchased, in kilograms",
+              "type": "number"
+            },
+            "kg_price": {
+              "description": "Price per kilogram of carbon credits, in SAR halalas",
+              "type": "number"
+            },
+            "callbackUrl": {
+              "description": "Callback URL for order updates (if any)",
+              "type": "string",
+              "nullable": true
+            },
+            "state": {
+              "description": "Current status of the order, e.g., fulfilled, pending, or cancelled",
+              "type": "string"
+            },
+            "portfolio": {
+              "description": "The portfolio ID related to the order",
+              "type": "string"
+            },
+            "projectRecords": {
+              "description": "List of project records for this order",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "description": "The ID of the project",
+                    "type": "string"
+                  },
+                  "project_category_id": {
+                    "description": "The category ID of the project",
+                    "type": "string"
+                  },
+                  "credit_batch_id": {
+                    "description": "The batch ID for the credits in this project",
+                    "type": "string"
+                  },
+                  "delta": {
+                    "description": "Amount of credits allocated to this project",
+                    "type": "number"
+                  },
+                  "recorded_on": {
+                    "description": "Date when this allocation was recorded",
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            },
+            "immediateChargeInvoice": {
               "type": "object",
               "properties": {
-                "project_id": {
-                  "description": "The ID of the project",
-                  "type": "string"
-                },
-                "project_category_id": {
-                  "description": "The category ID of the project",
-                  "type": "string"
-                },
-                "credit_batch_id": {
-                  "description": "The batch ID for the credits in this project",
-                  "type": "string"
-                },
-                "delta": {
-                  "description": "Amount of credits allocated to this project",
+                "amountDueSarHalalas": {
+                  "description": "The total amount due in SAR halalas",
                   "type": "number"
                 },
-                "recorded_on": {
-                  "description": "Date when this allocation was recorded",
+                "balanceAppliedSarHalalas": {
+                  "description": "The balance applied to the invoice in SAR halalas",
+                  "type": "number"
+                },
+                "receiptUrl": {
+                  "description": "URL to the receipt for this order",
                   "type": "string",
-                  "format": "date-time"
+                  "nullable": true
                 }
               }
             }
           }
-        }
-      },
+        },      
       "Project": {
         "required": ["name"],
         "type": "object",
