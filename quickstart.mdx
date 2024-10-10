@@ -43,14 +43,33 @@ You’ll receive a response like this:
 
 ```javascript
 {
-  "message":"Order placed successfully",
-  "order":{"_id":"ORD-1728559515925",
-  "amount":0.88,
-  "amountFulfilled":0.044,
-  "price":0.02,
-  "creditsPurchased":0.044,
-  "createdOn":"2024-10-10T11:25:15.926Z"}
+  {
+    "_id": "1728559515925",
+    "orderNumber": "<string>",
+    "description": "<string>",
+    "price_sar_halalas": 123,
+    "amount_kg": 123,
+    "kg_price": 123,
+    "callbackUrl": "<string>",
+    "state": "<string>",
+    "portfolio": "<string>",
+    "projectRecords": [
+      {
+        "project_id": "<string>",
+        "project_category_id": "<string>",
+        "credit_batch_id": "<string>",
+        "delta": 123,
+        "recorded_on": "2023-11-07T05:31:56Z"
+      }
+    ],
+    "immediateChargeInvoice": {
+      "amountDueSarHalalas": 123,
+      "balanceAppliedSarHalalas": 123,
+      "receiptUrl": "<string>"
+    }
+  }
+
 }
 ```
 
-The `_id` (in this case `ORD-1728559515925`) will allow you to retrieve your order.
+The `_id` (in this case `1728559515925`) will allow you to retrieve your order.
