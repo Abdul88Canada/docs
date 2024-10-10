@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "C-Mass API",
+    "title": "c-mass API",
     "description": "API for managing carbon credits, projects, portfolios, and orders",
     "version": "1.0.0"
   },
@@ -530,6 +530,140 @@
           }
         }
       }
+    },
+    "/api/v1/quotes/ground-freight": {
+      "post": {
+        "summary": "Get a carbon credit quote for ground freight emissions",
+        "tags": [
+          "Quotes"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "freight_mass_kg",
+                  "distance_km"
+                ],
+                "properties": {
+                  "freight_mass_kg": {
+                    "type": "number",
+                    "description": "Mass of freight, in kg"
+                  },
+                  "distance_km": {
+                    "type": "number",
+                    "description": "Distance of ground freight shipment, in km"
+                  },
+                  "portfolio_id": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional ID of the portfolio to use for the quote. The quote will be for an order fulfilled from this portfolio. If not specified, the account's default portfolio will be used."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fetched ground freight quote successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AirFreightQuote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/quotes/ground-transport": {
+      "post": {
+        "summary": "Get a carbon credit quote for ground transport emissions",
+        "tags": [
+          "Quotes"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "distance_km",
+                  "vehicle_type"
+                ],
+                "properties": {
+                  "distance_km": {
+                    "type": "number",
+                    "description": "Distance of ground transportation, in km"
+                  },
+                  "vehicle_type": {
+                    "type": "string",
+                    "description": "The type of vehicle used. Must be one of passenger_car_van_or_suv, small_bus, school_bus, or coach_bus."
+                  },
+                  "portfolio_id": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional ID of the portfolio to use for the quote. The quote will be for an order fulfilled from this portfolio. If not specified, the account's default portfolio will be used."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fetched ground freight quote successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AirFreightQuote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -549,8 +683,8 @@
             "description": "Number of carbon credits purchased, in kilograms",
             "type": "number"
           },
-          "price_usd_cents": {
-            "description": "Total price of the credits purchased in USD cents",
+          "price_sar_halalas": {
+            "description": "Total price of the credits purchased in SAR halalas",
             "type": "integer"
           },
           "metadata": {
@@ -696,8 +830,8 @@
             "description": "Amount of carbon credits the quote is for, in kilograms",
             "type": "number"
           },
-          "price_usd_cents": {
-            "description": "Price charged for the credits, in cents (integer)",
+          "price_sar_halalas": {
+            "description": "Price charged for the credits, in halalas (integer)",
             "type": "number"
           }
         }
