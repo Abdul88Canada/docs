@@ -626,7 +626,7 @@
                   },
                   "vehicle_type": {
                     "type": "string",
-                    "description": "The type of vehicle used. Must be one of passenger_car_van_or_suv, small_bus, school_bus, or coach_bus."
+                    "description": "The type of vehicle used. Must be one of `passenger_car_van_or_suv`, `small_bus`, `school_bus`, or `coach_bus`."
                   },
                   "portfolio_id": {
                     "type": "string",
