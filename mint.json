@@ -52,7 +52,8 @@
         "api-reference/endpoint/quotes/getQuoteForAirFreightEmissions",
         "api-reference/endpoint/quotes/getQuoteForFlightEmissions",
         "api-reference/endpoint/quotes/getQuoteForGroundFreightEmissions",
-        "api-reference/endpoint/quotes/getQuoteForGroundTransportEmissions"
+        "api-reference/endpoint/quotes/getQuoteForGroundTransportEmissions",
+        "api-reference/endpoint/quotes/getQuoteForElectricityConsumption"
       ]
     },
     {

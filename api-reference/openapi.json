@@ -664,6 +664,73 @@
           }
         }
       }
+    },
+    "/api/v1/quotes/electricity": {
+      "post": {
+        "summary": "Get a carbon credit quote for electricity consumption",
+        "tags": [
+          "Quotes"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "electricityConsumed",
+                  "pricePaid"
+                ],
+                "properties": {
+                  "electricityConsumed": {
+                    "type": "number",
+                    "description": "Electricity consumed, in kW."
+                  },
+                  "pricePaid": {
+                    "type": "number",
+                    "description": "How much was paid for the amount of electricity consumed."
+                  },
+                  "portfolio_id": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional ID of the portfolio to use for the quote. The quote will be for an order fulfilled from this portfolio. If not specified, the account's default portfolio will be used."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fetched electricity comsumption quote successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ElectricityQuote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -830,6 +897,19 @@
         }
       },
       "AirFreightQuote": {
+        "type": "object",
+        "properties": {
+          "amount_kg": {
+            "description": "Amount of carbon credits the quote is for, in kilograms",
+            "type": "number"
+          },
+          "price_sar_halalas": {
+            "description": "Price charged for the credits, in halalas (integer)",
+            "type": "number"
+          }
+        }
+      },
+      "ElectricityQuote": {
         "type": "object",
         "properties": {
           "amount_kg": {
