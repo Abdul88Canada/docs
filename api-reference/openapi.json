@@ -756,11 +756,11 @@
               "type": "number"
             },
             "amount_kg": {
-              "description": "Number of carbon credits purchased, in kilograms",
+              "description": "Number of carbon credits requested, in kilograms",
               "type": "number"
             },
-            "kg_price": {
-              "description": "Price per kilogram of carbon credits, in SAR halalas",
+            "creditsPurchased": {
+              "description": "Number of carbon credits fulfilled, in kilograms",
               "type": "number"
             },
             "callbackUrl": {
@@ -769,7 +769,7 @@
               "nullable": true
             },
             "state": {
-              "description": "Current status of the order, e.g., fulfilled, pending, or cancelled",
+              "description": "Current status of the order, e.g., `fulfilled`, `placed`, or `cancelled`",
               "type": "string"
             },
             "portfolio": {
