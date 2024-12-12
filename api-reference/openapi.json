@@ -88,6 +88,10 @@
                   "description": {
                     "type": "string",
                     "description": "Description of the order"
+                  },
+                  "customer": {
+                    "type": "string",
+                    "description": "Name of customer"
                   }
                 }
               }
