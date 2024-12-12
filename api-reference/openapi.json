@@ -746,6 +746,10 @@
               "description": "The unique order number",
               "type": "string"
             },
+            "customer": {
+              "description": "If purchased by customer",
+              "type": "string"
+            },
             "description": {
               "description": "Description of the order",
               "type": "string",
