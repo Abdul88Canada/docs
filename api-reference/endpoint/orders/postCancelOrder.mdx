@@ -1,5 +1,5 @@
 ---
 title: 'Cancel Order'
-openapi: 'POST /api/v1/orders/{id}/cancel'
+openapi: 'POST /v1/orders/{id}/cancel'
 description: 'When cancelling an order that has been fulfilled, a credit for the price of the order will be applied to the current invoice. This means that it is possible for the credit for a cancellation to appear on the invoice of the following billing period. For example, if a billing period ends between when the order was placed and when it is cancelled, then the credit will be applied to the latter billing period rather than the one during which the order was placed'
 ---

@@ -16,7 +16,7 @@
     }
   ],
   "paths": {
-    "/api/v1/orders": {
+    "/v1/orders": {
       "get": {
         "summary": "Retrieve all orders for a company",
         "tags": ["Orders"],
@@ -121,7 +121,7 @@
         }
       }
     },
-    "/api/v1/orders/{id}": {
+    "/v1/orders/{id}": {
       "get": {
         "summary": "Retrieve a specific order by ID",
         "tags": ["Orders"],
@@ -161,7 +161,7 @@
         }
       }
     },
-    "/api/v1/orders/{id}/cancel": {
+    "/v1/orders/{id}/cancel": {
       "post": {
         "summary": "Cancel an order by ID",
         "tags": ["Orders"],
@@ -204,7 +204,7 @@
         }
       }
     },
-    "/api/v1/projects/{id}": {
+    "/v1/projects/{id}": {
       "get": {
         "summary": "Retrieve a specific project by ID",
         "tags": ["Projects"],
@@ -244,7 +244,7 @@
         }
       }
     },
-    "/api/v1/portfolios": {
+    "/v1/portfolios": {
       "get": {
         "summary": "Retrieve all portfolios",
         "tags": ["Portfolios"],
@@ -276,7 +276,7 @@
         }
       }
     },
-    "/api/v1/portfolios/{id}": {
+    "/v1/portfolios/{id}": {
       "get": {
         "summary": "Retrieve a specific portfolio by ID",
         "tags": ["Portfolios"],
@@ -345,7 +345,7 @@
         }
       }
     },
-    "/api/v1/quotes": {
+    "/v1/quotes": {
       "post": {
         "summary": "Get carbon credit amount quote by emission mass",
         "tags": [
@@ -406,7 +406,7 @@
         }
       }
     },
-    "/api/v1/quotes/air-freight": {
+    "/v1/quotes/air-freight": {
       "post": {
         "summary": "Get a carbon credit quote for air freight emissions",
         "tags": [
@@ -473,7 +473,7 @@
         }
       }
     },
-    "/api/v1/quotes/flight": {
+    "/v1/quotes/flight": {
       "post": {
         "summary": "Get a carbon credit quote for flight emissions",
         "tags": [
@@ -535,7 +535,7 @@
         }
       }
     },
-    "/api/v1/quotes/ground-freight": {
+    "/v1/quotes/ground-freight": {
       "post": {
         "summary": "Get a carbon credit quote for ground freight emissions",
         "tags": [
@@ -602,7 +602,7 @@
         }
       }
     },
-    "/api/v1/quotes/ground-transport": {
+    "/v1/quotes/ground-transport": {
       "post": {
         "summary": "Get a carbon credit quote for ground transport emissions",
         "tags": [
@@ -669,7 +669,7 @@
         }
       }
     },
-    "/api/v1/quotes/electricity": {
+    "/v1/quotes/electricity": {
       "post": {
         "summary": "Get a carbon credit quote for electricity consumption",
         "tags": [
