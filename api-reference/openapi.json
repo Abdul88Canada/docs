@@ -822,7 +822,7 @@
                 }
               }
             },
-            "immediateChargeInvoice": {
+            "invoice": {
               "type": "object",
               "properties": {
                 "amountDueSarHalalas": {

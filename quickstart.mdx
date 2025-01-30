@@ -1,32 +1,33 @@
 ---
 title: 'Quickstart'
-description: 'This short tutorial will teach you the basics of making requests to the c-mass APIs.'
+description: 'This short tutorial will introduce you to the basics of making requests to the c-mass API.'
 ---
 
-## Assumptions
+## Prerequisites
 
-This tutorial assumes that you have a c-mass account. If not, sign up for a free account.
+To follow this tutorial, you need a c-mass account. If you don’t have one yet, you can sign up for a free account.
 
-### Steps
+### Steps to Get Started
 
-1- **Get your API Key**
+### 1. **Generate Your API Key**
 
-The first step is to generate an API key, which will allow you access to the CNaught APIs. Follow these steps:
+Before making any requests, you’ll need an API key to authenticate with the c-mass API. Follow these steps:
 
-- Log in to c-mass.
-- Navigate to the APIs page under the Developers tab.
-- Click the Create test API key button to create a test key, or click Set up API to create a live key (which will require you to set up a payment method).
+- Log in to your c-mass account.
+- Go to the **APIs** section under the **Developers** tab.
+- Click **Create test API key** to generate a test key, or **Set up API** to create a live key (a payment method is required for live mode).
 
 <img height="200" src="/images/example1.png" />
 
-<Warning>Save your API key somewhere safe; you will only be able to see it once. You can rotate your API key to a new one; the old one will remain valid for 24 hours.</Warning>
+<Warning> Store your API key securely, as it will only be displayed once. If needed, you can rotate your API key. The previous key will remain valid for 24 hours.</Warning>
 
-<Note>Learn more about <a href='/api-reference/introduction#test-mode'>**Test Mode**</a></Note>
+<Note> Learn more about <a href='/api-reference/introduction#test-mode'>**Test Mode**</a>.</Note>
 
+---
 
-2- **Place an order**
+### 2. **Placing an Order**
 
-Submit a credits order. Replace the `<C-MASS_API_KEY>` placeholder with the API key obtained in Step 1, and specify the amount of carbon credits (in kg of CO2e) you wish to purchase.
+Once you have your API key, you can submit an order for carbon credits. Replace `<C-MASS_API_KEY>` with the API key you obtained in Step 1, and specify the amount of carbon credits (in kilograms of CO₂e) you want to purchase.
 
 ```javascript
 curl --request POST \
@@ -38,10 +39,9 @@ curl --request POST \
   "amount_kg": 123,
   "description": "<string>"
 }'
-```
 You’ll receive a response like this:
 
-```javascript
+javascript
 {
   {
     "_id": "1728559515925",
@@ -51,6 +51,8 @@ You’ll receive a response like this:
     "amount_kg": 123,
     "kg_price": 123,
     "callbackUrl": "<string>",
+    "publicImpactPage": "<string>",
+    "certificateUrl": "<string>",
     "state": "<string>",
     "portfolio": "<string>",
     "projectRecords": [
@@ -62,7 +64,7 @@ You’ll receive a response like this:
         "recorded_on": "2023-11-07T05:31:56Z"
       }
     ],
-    "immediateChargeInvoice": {
+    "invoice": {
       "amountDueSarHalalas": 123,
       "balanceAppliedSarHalalas": 123,
       "receiptUrl": "<string>"
@@ -70,6 +72,6 @@ You’ll receive a response like this:
   }
 
 }
-```
 
-The `_id` (in this case `1728559515925`) will allow you to retrieve your order.
+
+The _id (in this case 1728559515925) will allow you to retrieve your order.
