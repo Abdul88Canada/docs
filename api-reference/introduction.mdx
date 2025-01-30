@@ -49,15 +49,6 @@ To maintain system stability, c-mass API enforces rate limits:
 
 ---
 
-## Idempotency  
-
-To prevent duplicate transactions caused by network failures or retries, the API supports **idempotency**, ensuring that repeated requests execute only once.  
-
-- Include an `Idempotency-Key: <key>` header in your request.  
-- If a request with the same key has already been processed, the API will return a response with the header: `X-Idempotent-Replay: true`.  
-
----
-
 ## Error Handling  
 
 The c-mass API uses standard HTTP status codes to indicate the success or failure of a request.  
