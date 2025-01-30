@@ -14,14 +14,12 @@ To follow this tutorial, you need a c-mass account. If you don’t have one yet,
 Before making any requests, you’ll need an API key to authenticate with the c-mass API. Follow these steps:
 
 - Log in to your c-mass account.
-- Go to the **APIs** section under the **Developers** tab.
+- Go to the **Devs** tab.
 - Click **Create test API key** to generate a test key, or **Set up API** to create a live key (a payment method is required for live mode).
 
-<img height="200" src="/images/example1.png" />
+<Note> Learn more about <a href='/api-reference/introduction#test-mode'>**Test Mode**</a>.</Note>
 
 <Warning> Store your API key securely, as it will only be displayed once. If needed, you can rotate your API key. The previous key will remain valid for 24 hours.</Warning>
-
-<Note> Learn more about <a href='/api-reference/introduction#test-mode'>**Test Mode**</a>.</Note>
 
 ---
 
@@ -35,9 +33,10 @@ curl --request POST \
   --header 'Authorization: Bearer <C-MASS_API_KEY>' \
   --header 'Content-Type: application/json' \
   --data '{
-  "portfolioId": "<string>",
   "amount_kg": 123,
-  "description": "<string>"
+  "description": "<string>",
+  "customer": "<string>",
+  "portfolioId": "<string>",
 }'
 You’ll receive a response like this:
 
