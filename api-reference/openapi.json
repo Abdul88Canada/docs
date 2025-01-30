@@ -784,10 +784,6 @@
               "description": "The portfolio ID related to the order",
               "type": "string"
             },
-            "publicImpactPage": {
-              "description": "URL to the impact page that can be shared publicly",
-              "type": "string"
-            },
             "certificateUrl": {
               "description": "URL to the order page with the certificate of the carbon credits",
               "type": "string"
