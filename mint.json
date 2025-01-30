@@ -31,42 +31,43 @@
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "API Docs",
       "pages": [
         "api-reference/introduction"
       ]
     },
     {
-      "group": "Orders",
-      "pages": [
-        "api-reference/endpoint/orders/getListOfOrders",
-        "api-reference/endpoint/orders/getOrderById",
-        "api-reference/endpoint/orders/postOrder",
-        "api-reference/endpoint/orders/postCancelOrder"
-      ]
-    },
-    {
       "group": "Quotes",
       "pages": [
-        "api-reference/endpoint/quotes/getQuoteByMass",
-        "api-reference/endpoint/quotes/getQuoteForAirFreightEmissions",
-        "api-reference/endpoint/quotes/getQuoteForFlightEmissions",
+        "api-reference/endpoint/quotes/getQuoteForElectricityConsumption",
         "api-reference/endpoint/quotes/getQuoteForGroundFreightEmissions",
-        "api-reference/endpoint/quotes/getQuoteForGroundTransportEmissions",
-        "api-reference/endpoint/quotes/getQuoteForElectricityConsumption"
+        "api-reference/endpoint/quotes/getQuoteForAirFreightEmissions",
+        "api-reference/endpoint/quotes/getQuoteByMass",
+        "api-reference/endpoint/quotes/getQuoteForFlightEmissions",
+        "api-reference/endpoint/quotes/getQuoteForGroundTransportEmissions"
       ]
     },
     {
-      "group": "Portfolios",
+      "group": "Orders",
       "pages": [
-        "api-reference/endpoint/portfolios/getListOfPortfolios",
-        "api-reference/endpoint/portfolios/getPortfolioById"
+        "api-reference/endpoint/orders/postOrder",
+        "api-reference/endpoint/orders/postCancelOrder",
+        "api-reference/endpoint/orders/getListOfOrders",
+        "api-reference/endpoint/orders/getOrderById"
       ]
     },
     {
       "group": "Projects",
       "pages": [
         "api-reference/endpoint/projects/getProjectById"
+      ]
+    },
+    {
+      "group": "Portfolios",
+      "pages": [
+        "api-reference/endpoint/portfolios/getPortfolioById",
+        "api-reference/endpoint/portfolios/getListOfPortfolios"
+
       ]
     }
   ],

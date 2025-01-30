@@ -1,5 +1,5 @@
 ---
 title: 'Create Carbon Credits Order'
 openapi: 'POST /v1/orders'
-description: 'Places an order for the specified amount of carbon credits (in kilograms), or for the specified total price (in SAR halalas). The order will remain in the `placed` state until it can be matched to available credits, after which the order will be `fulfilled` and moved to the fulfilled state. If specifying total price, we will determine the amount of carbon credits based on the unit price of the portfolio used for the order. Because the amount must be an integer number of kilograms, the final actual total price might be slightly different than the specified total price.'
+description: 'Submits an order for a specified amount of carbon credits (in kilograms) or a designated total price (in SAR halalas). The order remains in the `placed` state until it is matched with available credits, at which point it transitions to the `fulfilled` state. If a total price is specified, the system calculates the corresponding amount of carbon credits based on the unit price of the selected portfolio. Since carbon credits must be purchased in whole kilograms, the final total price may vary slightly from the initially specified amount.'
 ---
