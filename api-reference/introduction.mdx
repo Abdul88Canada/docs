@@ -1,70 +1,77 @@
 ---
 title: 'Overview'
-description: 'Introduction to c-mass API and features'
+description: 'Introduction to c-mass API and its capabilities'
 ---
 
 <Note>
-  This API documentation showcases how to purchase carbon credits and offset emissions with ease.
+  This documentation provides a comprehensive guide on how to purchase carbon credits and offset emissions seamlessly using the c-mass API.
 </Note>
 
-## Welcome to c-mass API
+## Welcome to the c-mass API  
 
-Our API allows you to easily purchase carbon credits for various activities like transportation, logistics, and more.
+The c-mass API enables businesses to easily integrate carbon credit purchases into their operations, covering various activities such as transportation, logistics, and more.
 
-## API endpoint
+## API Endpoint  
 
-The base URL for this version of the API is `https://carbon-engine.onrender.com/v1`. All endpoints described in this documentation are relative to this base URL.
+The base URL for this API version is: `https://carbon-engine.onrender.com/v1`
 
+  
+All endpoints referenced in this documentation are relative to this base URL.
 
-## Authentication
+---
 
-Clients must authenticate by including their c-mass API Key in the `Authorization` header. If the API key is invalid, a 401 error code will be returned.
+## Authentication  
 
-Use your sandbox API key to make sandbox requests and production API key for production requests.
+To access the API, clients must authenticate using their c-mass API Key by including it in the `Authorization` header.  
 
-## Sandbox Mode
-        
-        c-mass includes a sandbox mode that allows you to try all the API functions without incurring any costs or actually purchasing credits. 
-        
-        - You can toggle sandbox mode via the switch in the web dashboard.
-        - Use the same API endpoints for sandbox and production modes, but pass a sandbox API key.
-        - Both sandbox and production API keys can be created from the Developers page.
+- If an invalid API key is provided, the API will return a **401 Unauthorized** error.  
+- Use the **test API key** for sandbox requests and the **live API key** for production requests.  
 
-## Authentication
-        
-        Clients authenticate by including their c-mass API Key in the ***Authorization*** header. If the API key is invalid, a **401 Unauthorized** error will be returned.
-        
-        - Use the sandbox API key for sandbox requests.
-        - Use the production API key for production requests.
+### Test Mode  
 
- ## Rate Limiting
+c-mass offers a **Test Mode** that allows users to explore API functionalities without incurring charges or purchasing real carbon credits.  
 
-        The c-mass API employs rate limiting to ensure stability.
+- Toggle Test Mode via the web dashboard.  
+- The same API endpoints are used for both test and live modes, but a test API key must be provided.  
+- API keys (both test and live) can be generated from the **Developers page**.  
 
-        - **100 write and 100 read operations per second** are allowed.
-        - Users who exceed these limits will receive a **429 Too Many Requests** response.
-        - Implement a retry mechanism with **exponential backoff** for handling rate limits.
+---
 
- ## Idempotency
+## Rate Limiting  
 
-        To prevent duplicate actions during failures and retries, the API supports idempotency. This ensures that retrying the same request (e.g., order placement) will perform the action only once.
+To maintain system stability, c-mass API enforces rate limits:  
 
-        - Include an $$\Idempotency-Key:<key>\$$ header in your request to enable idempotency.
-        - If the request has already been processed, the response will include an $$\X-Idempotent-Replay: true\$$ header.
+- **100 write operations per second**  
+- **100 read operations per second**  
+- Requests exceeding these limits will return a **429 Too Many Requests** response.  
 
- ## Error Codes
+**Recommendation:** Implement a **retry mechanism with exponential backoff** to handle rate limits efficiently.
 
-        The c-mass API uses standard HTTP status codes to indicate success or failure:
+---
 
-        | Status Code | Error       | Description                              |
-        | ----------- | -------------- | ------------------------------------- |
-        | 400         | Bad Request     | Invalid request parameters.          |
-        | 401         | Unauthorized    | Missing or invalid API key.          |
-        | 403         | Forbidden       | Operation not allowed.               |
-        | 409         | Conflict        | Idempotency conflict.                |
-        | 422         | Unprocessable Entity     | Idempotency key used with different payload.          |
-        | 429         | Too Many Requests        | Rate limit exceeded.               |
-        | 503         | Service Unavailable        | Temporary server issue, retry the request.               |
-        
+## Idempotency  
 
-        For more details, see individual API endpoint documentation.
+To prevent duplicate transactions caused by network failures or retries, the API supports **idempotency**, ensuring that repeated requests execute only once.  
+
+- Include an `Idempotency-Key: <key>` header in your request.  
+- If a request with the same key has already been processed, the API will return a response with the header: `X-Idempotent-Replay: true`.  
+
+---
+
+## Error Handling  
+
+The c-mass API uses standard HTTP status codes to indicate the success or failure of a request.  
+
+| Status Code | Error                  | Description |
+|-------------|------------------------|-------------------------------------------|
+| **400**     | Bad Request             | The request parameters are invalid. |
+| **401**     | Unauthorized            | API key is missing or invalid. |
+| **403**     | Forbidden               | Action is not permitted. |
+| **409**     | Conflict                | Idempotency conflict detected. |
+| **422**     | Unprocessable Entity    | Idempotency key used with a different payload. |
+| **429**     | Too Many Requests       | API rate limit exceeded. |
+| **503**     | Service Unavailable     | Temporary server issue, retry the request later. |
+
+For more details, refer to the specific API endpoint documentation.
+
+---
